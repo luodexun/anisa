@@ -28,9 +28,26 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`core core:debug [FILE]`](#core-coredebug-file)
 * [`core core:start [FILE]`](#core-corestart-file)
 * [`core hello [FILE]`](#core-hello-file)
 * [`core help [COMMAND]`](#core-help-command)
+
+## `core core:debug [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ core core:debug [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/core/debug.ts](https://github.com/luodexun/core.git/core/blob/v0.0.6/src/commands/core/debug.ts)_
 
 ## `core core:start [FILE]`
 
