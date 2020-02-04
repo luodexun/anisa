@@ -28,8 +28,25 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`core core:start [FILE]`](#core-corestart-file)
 * [`core hello [FILE]`](#core-hello-file)
 * [`core help [COMMAND]`](#core-help-command)
+
+## `core core:start [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ core core:start [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/core/start.ts](https://github.com/luodexun/anisa/blob/v0.0.8/src/commands/core/start.ts)_
 
 ## `core hello [FILE]`
 
