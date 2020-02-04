@@ -9,7 +9,62 @@ start of core
 [![License](https://img.shields.io/npm/l/@luodexun/core.svg)](https://github.com/&#34;useWorkspaces&#34;: true,/&#34;useWorkspaces&#34;: true,/blob/master/package.json)
 
 <!-- toc -->
+* [Usage](#usage)
+* [Commands](#commands)
+<!-- tocstop -->
 # Usage
 <!-- usage -->
+```sh-session
+$ npm install -g @luodexun/core
+$ core COMMAND
+running command...
+$ core (-v|--version|version)
+@luodexun/core/0.0.8 darwin-x64 node-v12.13.1
+$ core --help [COMMAND]
+USAGE
+  $ core COMMAND
+...
+```
+<!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`core hello [FILE]`](#core-hello-file)
+* [`core help [COMMAND]`](#core-help-command)
+
+## `core hello [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ core hello [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+
+EXAMPLE
+  $ core hello
+  hello world from ./src/hello.ts!
+```
+
+_See code: [src/commands/hello.ts](https://github.com/luodexun/anisa/blob/v0.0.8/src/commands/hello.ts)_
+
+## `core help [COMMAND]`
+
+display help for core
+
+```
+USAGE
+  $ core help [COMMAND]
+
+ARGUMENTS
+  COMMAND  command to show help for
+
+OPTIONS
+  --all  see all commands in CLI
+```
+
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
+<!-- commandsstop -->
