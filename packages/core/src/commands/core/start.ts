@@ -1,25 +1,27 @@
-import {Command, flags} from '@oclif/command'
+import { Command, flags } from "@oclif/command";
 
 export default class CoreStart extends Command {
-  static description = 'describe the command here'
+  public static description = "describe the command here";
 
-  static flags = {
-    help: flags.help({char: 'h'}),
+  public static flags = {
+    help: flags.help({ char: "h" }),
     // flag with a value (-n, --name=VALUE)
-    name: flags.string({char: 'n', description: 'name to print'}),
+    name: flags.string({ char: "n", description: "name to print" }),
     // flag with no value (-f, --force)
-    force: flags.boolean({char: 'f'}),
-  }
+    force: flags.boolean({ char: "f" })
+  };
 
-  static args = [{name: 'file'}]
+  public static args = [{ name: "file" }];
 
-  async run() {
-    const {args, flags} = this.parse(CoreStart)
+  public async run() {
+    const { args, flags } = this.parse(CoreStart);
 
-    const name = flags.name || 'world'
-    this.log(`hello ${name} from /Users/luodexun/Desktop/anisa/packages/core/src/commands/core/start.ts`)
+    const name = flags.name || "world";
+    this.log(
+      `hello ${name} from /Users/luodexun/Desktop/anisa/packages/core/src/commands/core/start.ts`
+    );
     if (args.file && flags.force) {
-      this.log(`you input --force and --file: ${args.file}`)
+      this.log(`you input --force and --file: ${args.file}`);
     }
   }
 }
