@@ -6,7 +6,7 @@
   "bin": {
     "core": "./bin/run"
   },
-  "bugs": "https://github.com/\"useWorkspaces\": true,/\"useWorkspaces\": true,/issues",
+  "bugs": "https://github.com/luodexun/anisa/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -38,7 +38,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/\"useWorkspaces\": true,/\"useWorkspaces\": true,",
+  "homepage": "https://github.com/luodexun/anisa.git",
   "keywords": [
     "oclif"
   ],
