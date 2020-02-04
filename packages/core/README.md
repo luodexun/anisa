@@ -1,5 +1,4 @@
-@luodexun/core
-==============
+# @luodexun/core
 
 core is start
 
@@ -9,29 +8,37 @@ core is start
 [![License](https://img.shields.io/npm/l/@luodexun/core.svg)](https://github.com/https://github.com/luodexun/core.git/core/blob/master/package.json)
 
 <!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
-<!-- tocstop -->
+
+- [Usage](#usage)
+- [Commands](#commands)
+  <!-- tocstop -->
+
 # Usage
+
 <!-- usage -->
+
 ```sh-session
 $ npm install -g @luodexun/core
 $ core COMMAND
 running command...
 $ core (-v|--version|version)
-@luodexun/core/0.0.7 darwin-x64 node-v12.13.1
+@luodexun/core/0.0.8 darwin-x64 node-v12.13.1
 $ core --help [COMMAND]
 USAGE
   $ core COMMAND
 ...
 ```
+
 <!-- usagestop -->
+
 # Commands
+
 <!-- commands -->
-* [`core core:debug [FILE]`](#core-coredebug-file)
-* [`core core:start [FILE]`](#core-corestart-file)
-* [`core hello [FILE]`](#core-hello-file)
-* [`core help [COMMAND]`](#core-help-command)
+
+- [`core core:debug [FILE]`](#core-coredebug-file)
+- [`core core:start [FILE]`](#core-corestart-file)
+- [`core hello [FILE]`](#core-hello-file)
+- [`core help [COMMAND]`](#core-help-command)
 
 ## `core core:debug [FILE]`
 
@@ -47,7 +54,7 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/core/debug.ts](https://github.com/luodexun/core.git/core/blob/v0.0.7/src/commands/core/debug.ts)_
+_See code: [dist/commands/core/debug.ts](https://github.com/luodexun/core.git/core/blob/v0.0.8/dist/commands/core/debug.ts)_
 
 ## `core core:start [FILE]`
 
@@ -63,7 +70,7 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/core/start.ts](https://github.com/luodexun/core.git/core/blob/v0.0.7/src/commands/core/start.ts)_
+_See code: [dist/commands/core/start.ts](https://github.com/luodexun/core.git/core/blob/v0.0.8/dist/commands/core/start.ts)_
 
 ## `core hello [FILE]`
 
@@ -83,7 +90,7 @@ EXAMPLE
   hello world from ./src/hello.ts!
 ```
 
-_See code: [src/commands/hello.ts](https://github.com/luodexun/core.git/core/blob/v0.0.7/src/commands/hello.ts)_
+_See code: [dist/commands/hello.ts](https://github.com/luodexun/core.git/core/blob/v0.0.8/dist/commands/hello.ts)_
 
 ## `core help [COMMAND]`
 
@@ -101,4 +108,5 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
+
 <!-- commandsstop -->

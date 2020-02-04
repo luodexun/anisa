@@ -1,5 +1,6 @@
 {
   "private": true,
+  "version": "0.0.8",
   "name": "anisa",
   "description": "The packages that make up the ARK Core",
   "scripts": {
