@@ -62,5 +62,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "types": "lib/index.d.ts"
+  "types": "lib/index.d.ts",
+  "gitHead": "79f306612bb6be172300f3090429a2046686a1d2"
 }
