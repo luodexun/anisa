@@ -54,6 +54,9 @@
   "repository": "https://github.com/luodexun/anisa.git",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
+    "clean": "del lib",
+    "compile": "../../node_modules/typescript/bin/tsc",
+    "build": "yarn clean && yarn compile",
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",

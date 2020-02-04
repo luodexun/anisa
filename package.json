@@ -1,9 +1,18 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "lerna": "./node_modules/lerna/cli.js",
+    "setup": "yarn && yarn bootstrap && yarn build",
+    "setup:clean": "yarn && yarn clean && yarn bootstrap && yarn build",
+    "bootstrap": "yarn lerna bootstrap",
+    "clean": "yarn lerna clean --yes",
+    "build": "yarn lerna run build"
+  },
   "devDependencies": {
     "@types/nock": "^10.0.3",
     "@types/node": "^12.6.2",
+    "@sindresorhus/tsconfig": "^0.4.0",
     "@types/uuid": "^3.4.5",
     "babel-loader": "^8.0.6",
     "codecov": "^3.5.0",
