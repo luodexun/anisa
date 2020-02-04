@@ -9,7 +9,6 @@ core is start
 
 <!-- toc -->
 
-- [@luodexun/core](#luodexuncore)
 - [Usage](#usage)
 - [Commands](#commands)
   <!-- tocstop -->
@@ -23,7 +22,7 @@ $ npm install -g @luodexun/core
 $ core COMMAND
 running command...
 $ core (-v|--version|version)
-@luodexun/core/0.0.9 darwin-x64 node-v12.13.1
+@luodexun/core/0.0.8 darwin-x64 node-v12.13.1
 $ core --help [COMMAND]
 USAGE
   $ core COMMAND
@@ -55,7 +54,7 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [dist/commands/core/debug.ts](https://github.com/luodexun/core.git/core/blob/v0.0.9/dist/commands/core/debug.ts)_
+_See code: [dist/commands/core/debug.ts](https://github.com/luodexun/core.git/core/blob/v0.0.8/dist/commands/core/debug.ts)_
 
 ## `core core:start [FILE]`
 
@@ -71,7 +70,7 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [dist/commands/core/start.ts](https://github.com/luodexun/core.git/core/blob/v0.0.9/dist/commands/core/start.ts)_
+_See code: [dist/commands/core/start.ts](https://github.com/luodexun/core.git/core/blob/v0.0.8/dist/commands/core/start.ts)_
 
 ## `core hello [FILE]`
 
@@ -91,7 +90,7 @@ EXAMPLE
   hello world from ./src/hello.ts!
 ```
 
-_See code: [dist/commands/hello.ts](https://github.com/luodexun/core.git/core/blob/v0.0.9/dist/commands/hello.ts)_
+_See code: [dist/commands/hello.ts](https://github.com/luodexun/core.git/core/blob/v0.0.8/dist/commands/hello.ts)_
 
 ## `core help [COMMAND]`
 
