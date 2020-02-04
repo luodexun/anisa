@@ -34,7 +34,7 @@
   },
   "files": [
     "/bin",
-    "/lib",
+    "/dist",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
@@ -43,9 +43,10 @@
     "oclif"
   ],
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
+  "type": "dist/index.d.ts",
   "oclif": {
-    "commands": "./lib/commands",
+    "commands": "./dist/commands",
     "bin": "core",
     "plugins": [
       "@oclif/plugin-help"
