@@ -9,7 +9,7 @@
   "scripts": {
     "build": "yarn clean && yarn compile",
     "build:watch": "yarn clean && yarn compile -w",
-    "clean": "del dist",
+    "clean": "del lib",
     "compile": "../../node_modules/typescript/bin/tsc",
     "prepublishOnly": "yarn build"
   },
@@ -23,6 +23,7 @@
     "@hapi/hoek": "^8.0.2",
     "@hapi/joi": "^15.1.0",
     "awilix": "^4.2.2",
+    "del-cli": "^3.0.0",
     "delay": "^4.3.0",
     "env-paths": "^2.2.0",
     "envfile": "^3.0.0",
@@ -50,5 +51,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "https://github.com/luodexun/anisa#readme"
+  "homepage": "https://github.com/luodexun/anisa#readme",
+  "gitHead": "786ccd6bbd0d552d403d007b251244fe404dd606"
 }
