@@ -30,7 +30,6 @@ USAGE
 <!-- commands -->
 * [`core core:debug [FILE]`](#core-coredebug-file)
 * [`core core:start [FILE]`](#core-corestart-file)
-* [`core hello [FILE]`](#core-hello-file)
 * [`core help [COMMAND]`](#core-help-command)
 
 ## `core core:debug [FILE]`
@@ -64,26 +63,6 @@ OPTIONS
 ```
 
 _See code: [src/commands/core/start.ts](https://github.com/luodexun/anisa/blob/v0.0.12/src/commands/core/start.ts)_
-
-## `core hello [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ core hello [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-
-EXAMPLE
-  $ core hello
-  hello world from ./src/hello.ts!
-```
-
-_See code: [src/commands/hello.ts](https://github.com/luodexun/anisa/blob/v0.0.12/src/commands/hello.ts)_
 
 ## `core help [COMMAND]`
 
