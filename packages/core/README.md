@@ -19,7 +19,7 @@ $ npm install -g @luodexun/core
 $ core COMMAND
 running command...
 $ core (-v|--version|version)
-@luodexun/core/0.0.13 darwin-x64 node-v12.13.1
+@luodexun/core/0.0.14 darwin-x64 node-v12.13.1
 $ core --help [COMMAND]
 USAGE
   $ core COMMAND
@@ -46,7 +46,7 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/core/debug.ts](https://github.com/luodexun/anisa/blob/v0.0.13/src/commands/core/debug.ts)_
+_See code: [src/commands/core/debug.ts](https://github.com/luodexun/anisa/blob/v0.0.14/src/commands/core/debug.ts)_
 
 ## `core core:start [FILE]`
 
@@ -62,7 +62,7 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/core/start.ts](https://github.com/luodexun/anisa/blob/v0.0.13/src/commands/core/start.ts)_
+_See code: [src/commands/core/start.ts](https://github.com/luodexun/anisa/blob/v0.0.14/src/commands/core/start.ts)_
 
 ## `core help [COMMAND]`
 
