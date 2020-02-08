@@ -1,0 +1,58 @@
+{
+    "name": "@luodexun/wallet-api",
+    "version": "0.0.1",
+    "description": "Public API",
+    "license": "MIT",
+    "author": "luodexun",
+    "files": [
+        "lib"
+    ],
+    "main": "lib/index",
+    "types": "lib/index",
+    "scripts": {
+        "build": "yarn clean && yarn compile",
+        "build:watch": "yarn clean && yarn compile -w",
+        "clean": "del lib",
+        "compile": "../../node_modules/typescript/bin/tsc",
+        "prepublishOnly": "yarn build",
+        "pretest": "bash ../../scripts/pre-test.sh"
+    },
+    "dependencies": {
+        "@arkecosystem/core-container": "^2.5.28",
+        "@arkecosystem/core-http-utils": "^2.5.28",
+        "@arkecosystem/core-interfaces": "^2.5.28",
+        "@arkecosystem/core-transaction-pool": "^2.5.28",
+        "@arkecosystem/core-utils": "^2.5.28",
+        "@arkecosystem/crypto": "^2.5.28",
+        "@arkecosystem/utils": "^0.3.0",
+        "@hapi/boom": "^7.4.2",
+        "@hapi/joi": "^15.1.0",
+        "ajv": "^6.10.2",
+        "bs58check": "^2.1.2",
+        "dayjs": "^1.8.15",
+        "dottie": "^2.0.1",
+        "hapi-rate-limit": "^4.0.0",
+        "ip": "^1.1.5",
+        "lodash.groupby": "^4.6.0",
+        "lodash.orderby": "^4.6.0",
+        "lodash.partition": "^4.6.0",
+        "lodash.snakecase": "^4.1.1",
+        "semver": "^6.2.0"
+    },
+    "devDependencies": {
+        "@types/hapi__boom": "^7.4.0",
+        "@types/hapi__joi": "^15.0.2",
+        "@types/ip": "^1.1.0",
+        "@types/lodash.groupby": "^4.6.6",
+        "@types/lodash.orderby": "^4.6.6",
+        "@types/lodash.partition": "^4.6.6",
+        "@types/lodash.snakecase": "^4.1.6",
+        "@types/semver": "^6.0.1"
+    },
+    "engines": {
+        "node": ">=10.x"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

@@ -1,7 +1,6 @@
 import {Command, flags} from '@oclif/command'
-
 export default class CoreDebug extends Command {
-  static description = 'describe the command here'
+  static description = 'describe the command here';
 
   static flags = {
     help: flags.help({char: 'h'}),
