@@ -1,7 +1,7 @@
 {
   "name": "@luodexun/core",
   "description": "start of core",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "author": "luodexun",
   "bin": {
     "core": "./bin/run"
