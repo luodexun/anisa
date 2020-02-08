@@ -19,7 +19,7 @@ $ npm install -g @luodexun/core
 $ core COMMAND
 running command...
 $ core (-v|--version|version)
-@luodexun/core/0.0.17 darwin-x64 node-v12.13.1
+@luodexun/core/0.0.18 darwin-x64 node-v12.13.1
 $ core --help [COMMAND]
 USAGE
   $ core COMMAND
@@ -28,9 +28,19 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`core command`](#core-command)
 * [`core core:debug [FILE]`](#core-coredebug-file)
 * [`core core:start [FILE]`](#core-corestart-file)
 * [`core help [COMMAND]`](#core-help-command)
+
+## `core command`
+
+```
+USAGE
+  $ core command
+```
+
+_See code: [src/commands/command.ts](https://github.com/luodexun/anisa/blob/v0.0.18/src/commands/command.ts)_
 
 ## `core core:debug [FILE]`
 
@@ -46,23 +56,50 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/core/debug.ts](https://github.com/luodexun/anisa/blob/v0.0.17/src/commands/core/debug.ts)_
+_See code: [src/commands/core/debug.ts](https://github.com/luodexun/anisa/blob/v0.0.18/src/commands/core/debug.ts)_
 
 ## `core core:start [FILE]`
 
-describe the command here
+test start
 
 ```
 USAGE
   $ core core:start [FILE]
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  --bip38=bip38                     the encrypted bip38
+  --bip39=bip39                     the plain text bip39 passphrase
+  --disableDiscovery                permanently disable any peer discovery
+  --env=env                         [default: production]
+  --ignoreMinimumNetworkReach       ignore the minimum network reach on start
+  --launchMode=launchMode           the mode the relay will be launched in (seed only at the moment)
+  --network=devnet|mainnet|testnet  the name of the network that should be used
+  --networkStart                    indicate that this is the first start of seeds
+  --password=password               the password for the encrypted bip38
+  --skipDiscovery                   skip the initial peer discovery
+  --token=token                     the name of the token that should be used
+
+EXAMPLES
+  Run core
+  $ ark core:run
+
+  Run core as genesis
+  $ ark core:run --networkStart
+
+  Disable any discovery by other peers
+  $ ark core:run --disableDiscovery
+
+  Skip the initial discovery
+  $ ark core:run --skipDiscovery
+
+  Ignore the minimum network reach
+  $ ark core:run --ignoreMinimumNetworkReach
+
+  Start a seed
+  $ ark core:run --launchMode=seed
 ```
 
-_See code: [src/commands/core/start.ts](https://github.com/luodexun/anisa/blob/v0.0.17/src/commands/core/start.ts)_
+_See code: [src/commands/core/start.ts](https://github.com/luodexun/anisa/blob/v0.0.18/src/commands/core/start.ts)_
 
 ## `core help [COMMAND]`
 
