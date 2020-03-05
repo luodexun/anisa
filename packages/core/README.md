@@ -19,7 +19,7 @@ $ npm install -g @luodexun/core
 $ core COMMAND
 running command...
 $ core (-v|--version|version)
-@luodexun/core/0.0.24 darwin-x64 node-v12.13.1
+@luodexun/core/0.0.25 darwin-x64 node-v12.13.1
 $ core --help [COMMAND]
 USAGE
   $ core COMMAND
@@ -40,7 +40,7 @@ USAGE
   $ core command
 ```
 
-_See code: [src/commands/command.ts](https://github.com/luodexun/anisa/blob/v0.0.24/src/commands/command.ts)_
+_See code: [src/commands/command.ts](https://github.com/luodexun/anisa/blob/v0.0.25/src/commands/command.ts)_
 
 ## `core core:debug [FILE]`
 
@@ -56,7 +56,7 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/core/debug.ts](https://github.com/luodexun/anisa/blob/v0.0.24/src/commands/core/debug.ts)_
+_See code: [src/commands/core/debug.ts](https://github.com/luodexun/anisa/blob/v0.0.25/src/commands/core/debug.ts)_
 
 ## `core core:start [FILE]`
 
@@ -99,7 +99,7 @@ EXAMPLES
   $ ark core:run --launchMode=seed
 ```
 
-_See code: [src/commands/core/start.ts](https://github.com/luodexun/anisa/blob/v0.0.24/src/commands/core/start.ts)_
+_See code: [src/commands/core/start.ts](https://github.com/luodexun/anisa/blob/v0.0.25/src/commands/core/start.ts)_
 
 ## `core help [COMMAND]`
 
