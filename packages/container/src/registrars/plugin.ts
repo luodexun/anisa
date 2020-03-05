@@ -70,7 +70,6 @@ export class PluginRegistrar {
             if (this.plugins[name]) {
                 options = Hoek.applyToDefaults(this.plugins[name], options);
             }
-
             return this.registerWithContainer(name, options);
         } catch (error) {
             this.failedPlugins[name] = error;
@@ -91,7 +90,6 @@ export class PluginRegistrar {
             this.failedPlugins[plugin] = error;
             return;
         }
-
         if (!item.plugin.register) {
             return;
         }
@@ -108,7 +106,6 @@ export class PluginRegistrar {
         const version = item.plugin.version || item.plugin.pkg.version;
         const defaults = item.plugin.defaults || item.plugin.pkg.defaults;
         const alias = item.plugin.alias || item.plugin.pkg.alias;
-
         if (this.container.has(alias) || this.container.has(name)) {
             return;
         }

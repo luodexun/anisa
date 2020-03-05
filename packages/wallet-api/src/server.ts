@@ -1,12 +1,10 @@
-import { app } from "@arkecosystem/core-container";
-import { createServer, mountServer, plugins } from "@arkecosystem/core-http-utils";
-import { Logger } from "@arkecosystem/core-interfaces";
+import { createServer, mountServer } from "./utils";
+import * as plugins from "./plugins";
 import Hapi from "@hapi/hapi";
-import { get } from "dottie";
+import Bcrypt from "bcrypt";
+// import { get } from "dottie";
 
 export class Server {
-    private logger = app.resolvePlugin<Logger.ILogger>("logger");
-
     private http: any;
     private https: any;
 
@@ -39,12 +37,12 @@ export class Server {
 
     public async stop(): Promise<void> {
         if (this.http) {
-            this.logger.info(`Stopping Public HTTP API`);
+            console.log(`Stopping Public HTTP API`);
             await this.http.stop();
         }
 
         if (this.https) {
-            this.logger.info(`Stopping Public HTTPS API`);
+            console.log(`Stopping Public HTTPS API`);
             await this.https.stop();
         }
     }
@@ -72,12 +70,12 @@ export class Server {
             plugin: plugins.corsHeaders,
         });
 
-        await server.register({
-            plugin: plugins.whitelist,
-            options: {
-                whitelist: this.config.whitelist,
-            },
-        });
+        // await server.register({
+        //     plugin: plugins.whitelist,
+        //     options: {
+        //         whitelist: this.config.whitelist,
+        //     },
+        // });
 
         await server.register({
             plugin: require("./plugins/set-headers"),
@@ -91,21 +89,103 @@ export class Server {
         });
 
         await server.register({
-            plugin: require("./plugins/pagination"),
+            plugin: require('hapi-pagination'),
             options: {
                 query: {
-                    limit: {
-                        default: get(this.config, "pagination.limit", 100),
+                    page: {
+                        name: 'page',
+                        default: 1
                     },
+                    limit: {
+                        name: 'limit',
+                        default: 5
+                    },
+                    pagination: {
+                        name: 'pagination',
+                        default: true,
+                        active: true
+                    }
                 },
-            },
+                meta: {
+                    location: 'body', // The metadata will be put in the response body
+                    name: 'metadata', // The meta object will be called metadata
+                    count: {
+                        active: true,
+                        name: 'count'
+                    },
+                    pageCount: {
+                        name: 'totalPages'
+                    },
+                    self: {
+                        active: true // Will not generate the self link
+                    },
+                    first: {
+                        active: true // Will not generate the first link
+                    },
+                    last: {
+                        active: true // Will not generate the last link
+                    }
+                },
+                routes: {
+                    include: ['*'] // 需要开启的路由
+                }
+            }
         });
+        await server.register({
+            plugin: require('hapi-mysql2'),
+            options: {
+                // enableKeepAlive and keepAliveInitialDelay require at least mysql2@2.1.0 to work
+                settings: 'mysql://root:ldx574425450@localhost/dwn?enableKeepAlive=true&keepAliveInitialDelay=10000&connectionLimit=1000',
+                decorate: true
+            }
+        });
+        await server.register(require('@hapi/basic'));
+        const validate = async (request, username, password, h) => {
+            const users = {
+                lll279906908: {
+                    username: 'lll279906908',
+                    password: '$2b$10$fi500aFek3rWkk/lGvGruurv763Kcqfh1TK9J.ZUMJcLvCowjYo1m',   // '密码: secret'
+                    name: '骆德逊',
+                    id: '123'
+                }
+            };
+            const user = users[username];
+            if (!user) {
+                return { credentials: null, isValid: false };
+            }
+            const isValid = await Bcrypt.compare(password, user.password);
+            const credentials = { id: user.id, name: user.name };
+
+            return { isValid, credentials };
+        };
+        server.auth.strategy('simple', 'basic', { validate });
+        server.auth.default('simple');
 
         await server.register({
             plugin: require("./handlers"),
             routes: { prefix: "/api" },
         });
-
+        await server.register({
+            plugin: require('hapi-i18n'),
+            options: {
+                locales: ['ch', 'en'],
+                directory: __dirname + '/locales',
+                languageHeaderField: 'Accept-Language'
+            }});
+        await server.register({
+            plugin: require('@hapi/yar'),
+            options: {
+                storeBlank: false,
+                cache:{
+                    expiresIn:3600
+                },
+                cookieOptions: {
+                    password: '88922bdf219aec83ce25de927d2b50c9',
+                    isSecure: false,
+                    isSameSite:false
+                }
+            }
+        });
         for (const plugin of this.config.plugins) {
             if (typeof plugin.plugin === "string") {
                 plugin.plugin = require(plugin.plugin);

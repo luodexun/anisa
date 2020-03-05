@@ -76,7 +76,7 @@
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md",
-    "start:testnet": "yarn build && cross-env CORE_PATH_CONFIG=./bin/config/testnet  yarn anisa core:start  --env=test"
+    "start:testnet": "cross-env CORE_PATH_CONFIG=./bin/config/testnet  yarn anisa core:start  --env=test"
   },
   "publishConfig": {
     "access": "public"

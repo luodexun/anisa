@@ -1,6 +1,5 @@
-import { Container as container, EventEmitter, Logger } from "@arkecosystem/core-interfaces";
+import { Container as container,  Logger } from "@arkecosystem/core-interfaces";
 import { createContainer, Resolver } from "awilix";
-import delay from "delay";
 import semver from "semver";
 import { configManager } from "./config";
 import { Environment } from "./environment";
@@ -57,7 +56,6 @@ export class Container implements container.IContainer {
 
         // Setup the configuration
         this.config = await configManager.setUp(variables);
-
         // TODO: Move this out eventually - not really the responsibility of the container
         this.plugins = new PluginRegistrar(this, options);
         await this.plugins.setUp();
@@ -160,22 +158,7 @@ export class Container implements container.IContainer {
             this.shuttingDown = true;
 
             if (this.isReady) {
-                const logger: Logger.ILogger = this.resolvePlugin<Logger.ILogger>("logger");
-                if (logger) {
-                    logger.suppressConsoleOutput(this.silentShutdown);
-                    logger.info("Core is trying to gracefully shut down to avoid data corruption");
-                }
-
-                try {
-                    // Notify plugins about shutdown
-                    this.resolvePlugin<EventEmitter.EventEmitter>("event-emitter").emit("shutdown");
-
-                    // Wait for event to be emitted and give time to finish
-                    await delay(1000);
-                } catch (error) {
-                    // tslint:disable-next-line:no-console
-                    console.error(error.stack);
-                }
+                console.log(1)
 
                 await this.plugins.tearDown();
             }
