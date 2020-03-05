@@ -40,5 +40,9 @@
   },
   "bugs": {
     "url": "https://github.com/luodexun/anisa/issues"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "b391fd53a094ea54d9a4696f4232b50235141d39"
 }
