@@ -1,4 +1,4 @@
-import { Container as container,  Logger } from "@arkecosystem/core-interfaces";
+import { Container as container,  Logger } from "@luodexun/interfaces";
 import { createContainer, Resolver } from "awilix";
 import semver from "semver";
 import { configManager } from "./config";
@@ -154,15 +154,16 @@ export class Container implements container.IContainer {
             if (this.shuttingDown) {
                 return;
             }
-
             this.shuttingDown = true;
 
             if (this.isReady) {
-                console.log(1)
-
+                const logger: Logger.ILogger = this.resolvePlugin<Logger.ILogger>("logger");
+                if (logger) {
+                    logger.suppressConsoleOutput(this.silentShutdown);
+                    logger.info("Core is trying to gracefully shut down to avoid data corruption");
+                }
                 await this.plugins.tearDown();
             }
-
             process.exit();
         };
 

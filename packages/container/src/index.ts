@@ -1,4 +1,4 @@
-import { Container as container } from "@arkecosystem/core-interfaces";
+import { Container as container } from "@luodexun/interfaces";
 import { Container } from "./container";
 
 export const app: container.IContainer = new Container();

@@ -1,10 +1,13 @@
 import { createServer, mountServer } from "./utils";
+import { app } from "@luodexun/container";
 import * as plugins from "./plugins";
+import { Logger} from "@luodexun/interfaces";
 import Hapi from "@hapi/hapi";
 import Bcrypt from "bcrypt";
 // import { get } from "dottie";
 
 export class Server {
+    private logger = app.resolvePlugin<Logger.ILogger>("logger");
     private http: any;
     private https: any;
 
@@ -37,12 +40,12 @@ export class Server {
 
     public async stop(): Promise<void> {
         if (this.http) {
-            console.log(`Stopping Public HTTP API`);
+            this.logger.info(`Stopping Public HTTP API`);
             await this.http.stop();
         }
 
         if (this.https) {
-            console.log(`Stopping Public HTTPS API`);
+            this.logger.info(`Stopping Public HTTPS API`);
             await this.https.stop();
         }
     }
@@ -129,14 +132,6 @@ export class Server {
                 routes: {
                     include: ['*'] // 需要开启的路由
                 }
-            }
-        });
-        await server.register({
-            plugin: require('hapi-mysql2'),
-            options: {
-                // enableKeepAlive and keepAliveInitialDelay require at least mysql2@2.1.0 to work
-                settings: 'mysql://root:ldx574425450@localhost/dwn?enableKeepAlive=true&keepAliveInitialDelay=10000&connectionLimit=1000',
-                decorate: true
             }
         });
         await server.register(require('@hapi/basic'));

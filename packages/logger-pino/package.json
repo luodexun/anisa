@@ -10,14 +10,14 @@
   "scripts": {
     "build": "yarn clean && yarn compile",
     "build:watch": "yarn clean && yarn compile -w",
-    "clean": "del dist",
+    "clean": "del lib",
     "compile": "../../node_modules/typescript/bin/tsc",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@arkecosystem/core-container": "^2.6.11",
-    "@arkecosystem/core-interfaces": "^2.6.11",
-    "@arkecosystem/core-logger": "^2.6.11",
+    "@luodexun/container": "^0.0.10",
+    "@luodexun/interfaces": "^0.0.1",
+    "@luodexun/logger-manager": "^1.0.4",
     "pino": "^5.12.6",
     "pino-pretty": "^3.2.0",
     "pump": "^3.0.0",

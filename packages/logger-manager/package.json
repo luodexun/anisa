@@ -26,8 +26,8 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@arkecosystem/core-container": "^2.6.11",
-    "@arkecosystem/core-interfaces": "^2.6.11",
+    "@luodexun/container": "^0.0.10",
+    "@luodexun/interfaces": "^0.0.1",
     "lodash.isempty": "^4.4.0"
   },
   "devDependencies": {

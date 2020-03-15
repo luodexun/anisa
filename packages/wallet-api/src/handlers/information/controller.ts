@@ -6,10 +6,10 @@ export class BlockchainController {
             const kk = request.i18n.__('MESSAGE');
             console.log(request.yar.get('example'));
             request.yar.set('example', { key: kk });
-            let { data, sum} = await request.server.methods.information(request);
+            let {data,sum}= await request.server.methods.information(request);
             return h.response({results: data, totalCount: sum.count});
         } catch (err) {
-            console.log(err);
+            console.log(err)
             return Boom.badImplementation('terrible implementation');
         }
     }

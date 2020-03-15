@@ -8,8 +8,13 @@
   },
   "bugs": "https://github.com/luodexun/anisa/issues",
   "dependencies": {
-    "@arkecosystem/core-container": "^2.5.38",
-    "@arkecosystem/core-interfaces": "^2.5.38",
+    "@luodexun/container": "^0.0.10",
+    "@luodexun/interfaces": "^0.0.1",
+    "@luodexun/wallet-api": "0.0.7",
+    "@luodexun/logger-manager": "1.0.4",
+    "@luodexun/logger-pino": "1.0.4",
+    "@luodexun/database-manager": "0.0.1",
+    "@luodexun/database-postgres": "0.0.1",
     "@arkecosystem/crypto": "^2.5.38",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -76,7 +81,9 @@
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md",
-    "start:testnet": "cross-env CORE_PATH_CONFIG=./bin/config/testnet  yarn anisa core:start  --env=test"
+    "start:testnet": "cross-env CORE_PATH_CONFIG=./bin/config/testnet  yarn anisa core:start  --env=test",
+    "core:stop": "yarn anisa core:stop",
+    "core:debug": "yarn anisa core:debug"
   },
   "publishConfig": {
     "access": "public"

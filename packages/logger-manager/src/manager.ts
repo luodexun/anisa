@@ -1,4 +1,4 @@
-import { Logger } from "@arkecosystem/core-interfaces";
+import { Logger } from "@luodexun/interfaces";
 import { LoggerFactory } from "./factory";
 
 export class LoggerManager {

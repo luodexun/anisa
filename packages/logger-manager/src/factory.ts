@@ -1,5 +1,5 @@
-import { app } from "@arkecosystem/core-container";
-import { Logger } from "@arkecosystem/core-interfaces";
+ import { app } from "@arkecosystem/core-container";
+import { Logger } from "@luodexun/interfaces";
 
 export class LoggerFactory {
     public make(driver: Logger.ILogger): Logger.ILogger {

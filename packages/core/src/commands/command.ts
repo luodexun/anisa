@@ -1,9 +1,9 @@
-import { Container } from "@arkecosystem/core-interfaces";
+import { Container } from "@luodexun/interfaces";
 import { Networks } from "@arkecosystem/crypto";
 import Command, { flags } from "@oclif/command";
 import cli from "cli-ux";
 import envPaths, { Paths } from "env-paths";
-import { existsSync, readdirSync } from "fs";
+import { existsSync } from "fs";
 import Listr from "listr";
 import { join, resolve } from "path";
 import prompts from "prompts";
@@ -157,9 +157,11 @@ export abstract class BaseCommand extends Command {
 
   protected async parseWithNetwork(command: any): Promise<any> {
     const { args, flags } = this.parse(command);
+
     if (!flags.token) {
       flags.token = configManager.get("token");
     }
+
 
     if (process.env.CORE_PATH_CONFIG && !flags.network) {
 
@@ -183,49 +185,7 @@ export abstract class BaseCommand extends Command {
       flags.network = network;
     }
     if (!flags.network) {
-      const { config } = this.getEnvPaths(flags);
-
-      try {
-        const folders: string[] = readdirSync(config);
-
-        if (!folders || folders.length === 0) {
-          this.error(
-            'We were unable to detect any configuration. Please run "ark config:publish" and try again.',
-          );
-        }
-
-        if (folders.length === 1) {
-          flags.network = folders[0];
-        } else {
-          const response = await prompts([
-            {
-              type: "select",
-              name: "network",
-              message: "What network do you want to operate on?",
-              choices: folders
-                .filter(folder => this.isValidNetwork(folder))
-                .map(folder => ({ title: folder, value: folder })),
-            },
-            {
-              type: "confirm",
-              name: "confirm",
-              message: "Can you confirm?",
-            },
-          ]);
-
-          if (!response.network) {
-            this.abortWithInvalidInput();
-          }
-
-          if (response.confirm) {
-            flags.network = response.network;
-          }
-        }
-      } catch (error) {
-        this.error(
-          'We were unable to detect any configuration. Please run "ark config:publish" and try again.',
-        );
-      }
+      flags.network = 'test'
     }
 
     return { args, flags, paths: await this.getPaths(flags) };

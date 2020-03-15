@@ -1,13 +1,12 @@
-
-
+import { app } from "@luodexun/container";
 export const mountServer = async (name, server) => {
     try {
         await server.start();
 
-        console.log(`${name} Server running at: ${server.info.uri}`);
+        app.resolvePlugin("logger").info(`${name} Server running at: ${server.info.uri}`);
 
         return server;
     } catch (error) {
-        console.log(`Could not start ${name} Server!`, error);
+        app.forceExit(`Could not start ${name} Server!`, error);
     }
 };

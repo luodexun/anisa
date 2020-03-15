@@ -19,6 +19,8 @@
     },
     "dependencies": {
         "@arkecosystem/core-utils": "^2.6.1",
+        "@luodexun/container":"0.0.10",
+        "@luodexun/interfaces":"^0.0.1",
         "@arkecosystem/crypto": "^2.6.1",
         "@hapi/basic": "^6.0.0",
         "@hapi/boom": "^9.0.0",
@@ -33,7 +35,6 @@
         "dottie": "^2.0.2",
         "expand-home-dir": "0.0.3",
         "hapi-i18n": "^3.0.0",
-        "hapi-mysql2": "^2.5.0",
         "hapi-pagination": "^3.0.0",
         "hapi-rate-limit": "^4.1.0",
         "hapi-trailing-slash": "^3.1.0",

@@ -1,4 +1,4 @@
-import { Container, Logger } from "@arkecosystem/core-interfaces";
+import { Container, Logger } from "@luodexun/interfaces";
 import Hoek from "@hapi/hoek";
 import { asValue } from "awilix";
 import isString from "lodash.isstring";
@@ -193,6 +193,7 @@ export class PluginRegistrar {
      * @return {Object}
      */
     private resolve(plugin) {
+
         let item: any = require(plugin);
 
         if (!item.plugin) {

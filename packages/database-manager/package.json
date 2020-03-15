@@ -1,0 +1,53 @@
+{
+  "name": "@luodexun/database-manager",
+  "version": "0.0.1",
+  "description": "> TODO: description",
+  "author": "luodexun <ldx574425450>",
+  "homepage": "https://github.com/luodexun/anisa#readme",
+  "license": "ISC",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luodexun/anisa.git"
+  },
+  "bugs": {
+    "url": "https://github.com/luodexun/anisa/issues"
+  },
+  "main": "lib/index",
+  "types": "lib/index",
+  "scripts": {
+    "build": "yarn clean && yarn compile",
+    "build:watch": "yarn clean && yarn compile -w",
+    "clean": "del lib",
+    "compile": "../../node_modules/typescript/bin/tsc"
+  },
+  "dependencies": {
+    "@luodexun/interfaces":"^0.0.1",
+    "dottie": "^2.0.1",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.compact": "^3.0.1",
+    "lodash.snakecase": "^4.1.1",
+    "lodash.uniq": "^4.5.0",
+    "pluralize": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/dottie": "^2.0.3",
+    "@types/lodash.clonedeep": "^4.5.6",
+    "@types/lodash.compact": "^3.0.6",
+    "@types/lodash.snakecase": "^4.1.6",
+    "@types/lodash.uniq": "^4.5.6",
+    "@types/pluralize": "^0.0.29"
+  },
+  "engines": {
+    "node": ">=10.x"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

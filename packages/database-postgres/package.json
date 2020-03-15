@@ -1,0 +1,55 @@
+{
+  "name": "@luodexun/database-postgres",
+  "version": "0.0.1",
+  "description": "> TODO: description",
+  "author": "luodexun <ldx574425450>",
+  "homepage": "https://github.com/luodexun/anisa#readme",
+  "license": "ISC",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luodexun/anisa.git"
+  },
+  "bugs": {
+    "url": "https://github.com/luodexun/anisa/issues"
+  },
+  "main": "lib/index",
+  "types": "lib/index",
+  "scripts": {
+    "build": "yarn clean && yarn compile",
+    "build:watch": "yarn clean && yarn compile -w",
+    "clean": "del lib",
+    "compile": "../../node_modules/typescript/bin/tsc"
+  },
+  "dependencies": {
+    "@luodexun/container": "0.0.10",
+    "@luodexun/interfaces":"^0.0.1",
+    "@luodexun/database-manager": "0.0.1",
+    "bluebird": "^3.5.5",
+    "cpy-cli": "^2.0.0",
+    "dayjs": "^1.8.15",
+    "lodash.chunk": "^4.2.0",
+    "lodash.partition": "^4.6.0",
+    "pg-promise": "^8.7.4",
+    "pluralize": "^8.0.0",
+    "sql": "^0.78.0"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.27",
+    "@types/lodash.chunk": "^4.2.6",
+    "@types/lodash.partition": "^4.6.6",
+    "@types/pluralize": "^0.0.29"
+  },
+  "engines": {
+    "node": ">=10.x"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

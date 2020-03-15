@@ -1,6 +1,6 @@
-import { app } from "@arkecosystem/core-container";
-import { Logger } from "@arkecosystem/core-interfaces";
-import { AbstractLogger } from "@arkecosystem/core-logger";
+import { app } from "@luodexun/container";
+import { Logger } from "@luodexun/interfaces";
+import { AbstractLogger } from "@luodexun/logger-manager";
 import { WriteStream } from "fs";
 import pino, { PrettyOptions } from "pino";
 import PinoPretty from "pino-pretty";
@@ -91,7 +91,7 @@ export class PinoLogger extends AbstractLogger {
                 return `${app.getName()}-${filename}.log.gz`;
             },
             {
-                path: process.env.CORE_PATH_LOG,
+                path: process.env.CORE_PATH_LOG||"./",
                 initialRotation: true,
                 interval: this.options.fileRotator ? this.options.fileRotator.interval : "1d",
                 maxSize: "100M",

@@ -1,4 +1,6 @@
-import {Command, flags} from '@oclif/command'
+import {Command, flags} from '@oclif/command';
+import { ConnectionManager } from "@luodexun/database-manager";
+import { PostgresConnection } from "@luodexun/database-postgres";
 export default class CoreDebug extends Command {
   static description = 'describe the command here';
 
@@ -13,12 +15,21 @@ export default class CoreDebug extends Command {
   static args = [{name: 'file'}]
 
   async run() {
-    const {args, flags} = this.parse(CoreDebug)
-
-    const name = flags.name || 'world'
-    this.log(`hello ${name} from /Users/luodexun/Desktop/anisa/packages/core/src/commands/core/debug.ts`)
-    if (args.file && flags.force) {
-      this.log(`you input --force and --file: ${args.file}`)
-    }
+    // @ts-ignore
+    const connection = await new ConnectionManager().createConnection(new PostgresConnection({
+      initialization: {
+        capSQL: true,
+        promiseLib: require("bluebird"),
+        noLocking: true,
+      },
+      connection: {
+        host: "localhost",
+        port: 5432,
+        database: "test",
+        user: "postgres",
+        password:"123456",
+      },
+      estimateTotalCount: false,
+    }));
   }
 }
