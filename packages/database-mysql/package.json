@@ -1,6 +1,6 @@
 {
   "name": "@luodexun/database-mysql",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "> TODO: description",
   "author": "luodexun <ldx574425450>",
   "homepage": "https://github.com/luodexun/anisa#readme",
@@ -28,9 +28,9 @@
     "compile": "../../node_modules/typescript/bin/tsc"
   },
   "dependencies": {
-    "@luodexun/container": "0.0.10",
-    "@luodexun/database-manager": "0.0.1",
-    "@luodexun/interfaces": "^0.0.1",
+    "@luodexun/container": "^0.0.11",
+    "@luodexun/database-manager": "^0.0.2",
+    "@luodexun/interfaces": "^0.0.2",
     "bluebird": "^3.5.5",
     "cpy-cli": "^2.0.0",
     "dayjs": "^1.8.15",

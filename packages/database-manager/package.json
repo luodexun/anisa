@@ -1,6 +1,6 @@
 {
   "name": "@luodexun/database-manager",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "> TODO: description",
   "author": "luodexun <ldx574425450>",
   "homepage": "https://github.com/luodexun/anisa#readme",
@@ -28,7 +28,7 @@
     "compile": "../../node_modules/typescript/bin/tsc"
   },
   "dependencies": {
-    "@luodexun/interfaces":"^0.0.1",
+    "@luodexun/interfaces": "^0.0.2",
     "dottie": "^2.0.1",
     "lodash.clonedeep": "^4.5.0",
     "lodash.compact": "^3.0.1",

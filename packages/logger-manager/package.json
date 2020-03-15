@@ -1,6 +1,6 @@
 {
   "name": "@luodexun/logger-manager",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "> TODO: description",
   "author": "luodexun <ldx574425450>",
   "homepage": "https://github.com/luodexun/anisa#readme",
@@ -26,8 +26,8 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@luodexun/container": "^0.0.10",
-    "@luodexun/interfaces": "^0.0.1",
+    "@luodexun/container": "^0.0.11",
+    "@luodexun/interfaces": "^0.0.2",
     "lodash.isempty": "^4.4.0"
   },
   "devDependencies": {

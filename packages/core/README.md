@@ -19,7 +19,7 @@ $ npm install -g @luodexun/core
 $ core COMMAND
 running command...
 $ core (-v|--version|version)
-@luodexun/core/0.0.26 darwin-x64 node-v12.13.1
+@luodexun/core/0.0.27 darwin-x64 node-v12.13.1
 $ core --help [COMMAND]
 USAGE
   $ core COMMAND
@@ -31,6 +31,7 @@ USAGE
 * [`core command`](#core-command)
 * [`core core:debug [FILE]`](#core-coredebug-file)
 * [`core core:start [FILE]`](#core-corestart-file)
+* [`core core:stop`](#core-corestop)
 * [`core help [COMMAND]`](#core-help-command)
 
 ## `core command`
@@ -40,7 +41,7 @@ USAGE
   $ core command
 ```
 
-_See code: [src/commands/command.ts](https://github.com/luodexun/anisa/blob/v0.0.26/src/commands/command.ts)_
+_See code: [src/commands/command.ts](https://github.com/luodexun/anisa/blob/v0.0.27/src/commands/command.ts)_
 
 ## `core core:debug [FILE]`
 
@@ -56,7 +57,7 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/core/debug.ts](https://github.com/luodexun/anisa/blob/v0.0.26/src/commands/core/debug.ts)_
+_See code: [src/commands/core/debug.ts](https://github.com/luodexun/anisa/blob/v0.0.27/src/commands/core/debug.ts)_
 
 ## `core core:start [FILE]`
 
@@ -99,7 +100,30 @@ EXAMPLES
   $ ark core:run --launchMode=seed
 ```
 
-_See code: [src/commands/core/start.ts](https://github.com/luodexun/anisa/blob/v0.0.26/src/commands/core/start.ts)_
+_See code: [src/commands/core/start.ts](https://github.com/luodexun/anisa/blob/v0.0.27/src/commands/core/start.ts)_
+
+## `core core:stop`
+
+Stop the core
+
+```
+USAGE
+  $ core core:stop
+
+OPTIONS
+  --daemon                          stop the process or daemon
+  --network=devnet|mainnet|testnet  the name of the network that should be used
+  --token=token                     the name of the token that should be used
+
+EXAMPLES
+  Stop the core
+  $ anisa core:stop
+
+  Stop the core daemon
+  $ anisa core:stop --daemon
+```
+
+_See code: [src/commands/core/stop.ts](https://github.com/luodexun/anisa/blob/v0.0.27/src/commands/core/stop.ts)_
 
 ## `core help [COMMAND]`
 

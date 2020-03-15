@@ -1,6 +1,6 @@
 {
     "name": "@luodexun/wallet-api",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "Public API",
     "license": "MIT",
     "author": "luodexun",
@@ -19,8 +19,6 @@
     },
     "dependencies": {
         "@arkecosystem/core-utils": "^2.6.1",
-        "@luodexun/container":"0.0.10",
-        "@luodexun/interfaces":"^0.0.1",
         "@arkecosystem/crypto": "^2.6.1",
         "@hapi/basic": "^6.0.0",
         "@hapi/boom": "^9.0.0",
@@ -30,6 +28,8 @@
         "@hapi/hapi": "^19.1.1",
         "@hapi/joi": "^17.1.0",
         "@hapi/yar": "^10.0.0",
+        "@luodexun/container": "^0.0.11",
+        "@luodexun/interfaces": "^0.0.2",
         "bcrypt": "^3.0.8",
         "deepmerge": "^4.2.2",
         "dottie": "^2.0.2",
