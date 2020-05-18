@@ -10,7 +10,7 @@
   "scripts": {
     "build": "yarn clean && yarn compile",
     "build:watch": "yarn clean && yarn compile -w",
-    "clean": "del lib",
+    "clean": "../../node_modules/del-cli/cli.js lib",
     "compile": "../../node_modules/typescript/bin/tsc",
     "prepublishOnly": "yarn build"
   },

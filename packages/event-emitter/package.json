@@ -23,7 +23,7 @@
   "scripts": {
     "build": "yarn clean && yarn compile",
     "build:watch": "yarn clean && yarn compile -w",
-    "clean": "del dist",
+    "clean": "../../node_modules/del-cli/cli.js dist",
     "compile": "../../node_modules/typescript/bin/tsc",
     "prepublishOnly": "yarn build"
   },
