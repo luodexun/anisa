@@ -74,7 +74,7 @@
   "scripts": {
     "anisa": "./bin/run",
     "postpack": "rm -f oclif.manifest.json",
-    "clean": "del lib",
+    "clean": "../../node_modules/del-cli/cli.js lib",
     "compile": "../../node_modules/typescript/bin/tsc",
     "build": "yarn clean && yarn compile",
     "posttest": "eslint . --ext .ts --config .eslintrc",

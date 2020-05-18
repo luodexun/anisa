@@ -1,4 +1,4 @@
- import { app } from "@arkecosystem/core-container";
+import { app } from "@luodexun/container";
 import { Logger } from "@luodexun/interfaces";
 
 export class LoggerFactory {

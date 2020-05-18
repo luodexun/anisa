@@ -28,8 +28,8 @@ export class PinoLogger extends AbstractLogger {
 
         this.fileStream = this.getFileStream();
 
-        const consoleTransport = this.createPrettyTransport(this.options.levels.console, { colorize: true });
-        const fileTransport = this.createPrettyTransport(this.options.levels.file, { colorize: false });
+        const consoleTransport = this.createPrettyTransport(this.options.levels.console, { forceColor: true });
+        const fileTransport = this.createPrettyTransport(this.options.levels.file, { forceColor: false });
 
         pump(stream, split(), consoleTransport, process.stdout);
         pump(stream, split(), fileTransport, this.fileStream);
@@ -91,7 +91,7 @@ export class PinoLogger extends AbstractLogger {
                 return `${app.getName()}-${filename}.log.gz`;
             },
             {
-                path: process.env.CORE_PATH_LOG||"./",
+                path: process.env.CORE_PATH_LOG || "./",
                 initialRotation: true,
                 interval: this.options.fileRotator ? this.options.fileRotator.interval : "1d",
                 maxSize: "100M",
