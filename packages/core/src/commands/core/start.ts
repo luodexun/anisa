@@ -1,10 +1,10 @@
+import { app } from "@luodexun/container";
 import { flags } from "@oclif/command";
 import { CommandFlags } from "../../types";
 import { BaseCommand } from "../command";
-import { app } from "@luodexun/container";
 
 export default class CoreStart extends BaseCommand  {
-  public static description = 'test start';
+  public static description = "test start";
 
   public static examples: string[] = [
     `Run core
@@ -40,9 +40,9 @@ $ ark core:run --launchMode=seed
     }),
   };
 
-  static args = [{name: 'file'}]
+  public static args = [{name: "file"}]
 
-  async run() {
+  public async run() {
     const { flags } = await this.parseWithNetwork(CoreStart);
     this.log(`you input --force and --file: ${flags}`);
 
@@ -51,8 +51,8 @@ $ ark core:run --launchMode=seed
       flags,
       {
         exclude: [],
-        options: {}
-      }
+        options: {},
+      },
     );
   }
 }

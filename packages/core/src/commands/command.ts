@@ -1,5 +1,5 @@
-import { Container } from "@luodexun/interfaces";
 import { Networks } from "@arkecosystem/crypto";
+import { Container } from "@luodexun/interfaces";
 import Command, { flags } from "@oclif/command";
 import cli from "cli-ux";
 import envPaths, { Paths } from "env-paths";
@@ -15,7 +15,7 @@ import { CommandFlags, Options } from "../types";
 // tslint:disable-next-line:no-var-requires
 const { version } = require("../../package.json");
 
-const validNetworks = Object.keys(Networks).filter(network => network !== "unitnet");
+const validNetworks = Object.keys(Networks).filter((network) => network !== "unitnet");
 
 export abstract class BaseCommand extends Command {
   public static flagsNetwork: Record<string, object> = {
@@ -158,15 +158,16 @@ export abstract class BaseCommand extends Command {
   protected async parseWithNetwork(command: any): Promise<any> {
     const { args, flags } = this.parse(command);
 
+    // @ts-ignore
     if (!flags.token) {
+      // @ts-ignore
       flags.token = configManager.get("token");
     }
 
-
+    // @ts-ignore
     if (process.env.CORE_PATH_CONFIG && !flags.network) {
 
       let config: string = process.env.CORE_PATH_CONFIG;
-
 
       if (!existsSync(config)) {
         this.error(`The given config "${config}" does not exist.`);
@@ -179,12 +180,16 @@ export abstract class BaseCommand extends Command {
       const network: string = config.split("/").pop();
 
       if (!this.isValidNetwork(network)) {
+        // @ts-ignore
         this.error(`The given network "${flags.network}" is not valid.`);
       }
 
+      // @ts-ignore
       flags.network = network;
     }
+    // @ts-ignore
     if (!flags.network) {
+      // @ts-ignore
       flags.network = 'test'
     }
 

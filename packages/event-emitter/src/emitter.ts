@@ -1,6 +1,6 @@
 import { EventEmitter as NativeEmitter } from "events";
 
-export class EventEmitter extends NativeEmitter {e
+export class EventEmitter extends NativeEmitter {
     public on(event: string | symbol, listener: (...args: any) => void): this {
         this.ensureListenerCount(event, (maxListeners: number) => maxListeners + 1);
 

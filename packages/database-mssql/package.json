@@ -1,0 +1,44 @@
+{
+  "name": "@luodexun/database-mssql",
+  "version": "0.0.1",
+  "description": "a mssql connect",
+  "author": "luodexun <32090377+luodexun@users.noreply.github.com>",
+  "homepage": "https://github.com/luodexun/anisa#readme",
+  "main": "lib/index",
+  "types": "lib/index",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luodexun/anisa.git"
+  },
+  "bugs": {
+    "url": "https://github.com/luodexun/anisa/issues"
+  },
+  "scripts": {
+    "build": "yarn clean && yarn compile",
+    "build:watch": "yarn clean && yarn compile -w",
+    "clean": "../../node_modules/del-cli/cli.js lib",
+    "compile": "../../node_modules/typescript/bin/tsc"
+  },
+  "engines": {
+    "node": ">=10.x"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@luodexun/container": "^0.0.11",
+    "@luodexun/database-manager": "^0.0.2",
+    "@luodexun/interfaces": "^0.0.2",
+    "mssql": "^6.2.0"
+  },
+  "devDependencies": {
+    "@types/mssql": "^6.0.2"
+  }
+}

@@ -1,5 +1,5 @@
-import { app } from "@arkecosystem/core-container";
-import { Container } from "@arkecosystem/core-interfaces";
+import { app } from "@luodexun/container";
+import { Container } from "@luodexun/interfaces";
 
 // tslint:disable-next-line:no-var-requires
 const { version } = require("../../package.json");

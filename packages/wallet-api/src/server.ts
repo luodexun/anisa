@@ -1,9 +1,9 @@
-import { createServer, mountServer } from "./utils";
-import { app } from "@luodexun/container";
-import * as plugins from "./plugins";
-import { Logger} from "@luodexun/interfaces";
 import Hapi from "@hapi/hapi";
+import { app } from "@luodexun/container";
+import { Logger} from "@luodexun/interfaces";
 import Bcrypt from "bcrypt";
+import * as plugins from "./plugins";
+import { createServer, mountServer } from "./utils";
 // import { get } from "dottie";
 
 export class Server {
@@ -92,57 +92,57 @@ export class Server {
         });
 
         await server.register({
-            plugin: require('hapi-pagination'),
+            plugin: require("hapi-pagination"),
             options: {
                 query: {
                     page: {
-                        name: 'page',
-                        default: 1
+                        name: "page",
+                        default: 1,
                     },
                     limit: {
-                        name: 'limit',
-                        default: 5
+                        name: "limit",
+                        default: 5,
                     },
                     pagination: {
-                        name: 'pagination',
+                        name: "pagination",
                         default: true,
-                        active: true
-                    }
+                        active: true,
+                    },
                 },
                 meta: {
-                    location: 'body', // The metadata will be put in the response body
-                    name: 'metadata', // The meta object will be called metadata
+                    location: "body", // The metadata will be put in the response body
+                    name: "metadata", // The meta object will be called metadata
                     count: {
                         active: true,
-                        name: 'count'
+                        name: "count",
                     },
                     pageCount: {
-                        name: 'totalPages'
+                        name: "totalPages",
                     },
                     self: {
-                        active: true // Will not generate the self link
+                        active: true, // Will not generate the self link
                     },
                     first: {
-                        active: true // Will not generate the first link
+                        active: true, // Will not generate the first link
                     },
                     last: {
-                        active: true // Will not generate the last link
-                    }
+                        active: true, // Will not generate the last link
+                    },
                 },
                 routes: {
-                    include: ['*'] // 需要开启的路由
-                }
-            }
+                    include: ["*"], // 需要开启的路由
+                },
+            },
         });
-        await server.register(require('@hapi/basic'));
+        await server.register(require("@hapi/basic"));
         const validate = async (request, username, password, h) => {
             const users = {
                 lll279906908: {
-                    username: 'lll279906908',
-                    password: '$2b$10$fi500aFek3rWkk/lGvGruurv763Kcqfh1TK9J.ZUMJcLvCowjYo1m',   // '密码: secret'
-                    name: '骆德逊',
-                    id: '123'
-                }
+                    username: "lll279906908",
+                    password: "$2b$10$fi500aFek3rWkk/lGvGruurv763Kcqfh1TK9J.ZUMJcLvCowjYo1m",   // '密码: secret'
+                    name: "骆德逊",
+                    id: "123",
+                },
             };
             const user = users[username];
             if (!user) {
@@ -153,33 +153,33 @@ export class Server {
 
             return { isValid, credentials };
         };
-        server.auth.strategy('simple', 'basic', { validate });
-        server.auth.default('simple');
+        server.auth.strategy("simple", "basic", { validate });
+        server.auth.default("simple");
 
         await server.register({
             plugin: require("./handlers"),
             routes: { prefix: "/api" },
         });
         await server.register({
-            plugin: require('hapi-i18n'),
+            plugin: require("hapi-i18n"),
             options: {
-                locales: ['ch', 'en'],
-                directory: __dirname + '/locales',
-                languageHeaderField: 'Accept-Language'
+                locales: ["ch", "en"],
+                directory: __dirname + "/locales",
+                languageHeaderField: "Accept-Language",
             }});
         await server.register({
-            plugin: require('@hapi/yar'),
+            plugin: require("@hapi/yar"),
             options: {
                 storeBlank: false,
-                cache:{
-                    expiresIn:3600
+                cache: {
+                    expiresIn: 3600,
                 },
                 cookieOptions: {
-                    password: '88922bdf219aec83ce25de927d2b50c9',
+                    password: "88922bdf219aec83ce25de927d2b50c9",
                     isSecure: false,
-                    isSameSite:false
-                }
-            }
+                    isSameSite: false,
+                },
+            },
         });
         for (const plugin of this.config.plugins) {
             if (typeof plugin.plugin === "string") {

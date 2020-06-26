@@ -1,7 +1,7 @@
 export interface IConnection {
     options: Record<string, any>;
 
-    query:any;
+    query: any;
 
     make(): Promise<IConnection>;
 

@@ -12,7 +12,6 @@ export const plugin: Container.IPluginDescriptor = {
 
             return false;
         }
-
         const server = new Server(options);
         await server.start();
 

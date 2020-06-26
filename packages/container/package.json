@@ -22,6 +22,7 @@
     "@hapi/hoek": "^8.0.2",
     "@hapi/joi": "^15.1.0",
     "@luodexun/database-manager": "^0.0.2",
+    "@luodexun/database-mssql": "^0.0.1",
     "@luodexun/database-mysql": "^0.0.2",
     "@luodexun/database-postgres": "^0.0.2",
     "@luodexun/interfaces": "^0.0.2",

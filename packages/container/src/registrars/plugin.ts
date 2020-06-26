@@ -1,5 +1,5 @@
-import { Container, Logger } from "@luodexun/interfaces";
 import Hoek from "@hapi/hoek";
+import { Container, Logger } from "@luodexun/interfaces";
 import { asValue } from "awilix";
 import isString from "lodash.isstring";
 import semver from "semver";

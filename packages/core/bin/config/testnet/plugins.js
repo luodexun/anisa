@@ -16,5 +16,12 @@ module.exports = {
     user: process.env.CORE_DB_USERNAME || "root",
     password: process.env.CORE_DB_PASSWORD || "ldx574425450",
   },
+  "@luodexun/database-mssql":{
+    server:"106.55.62.27",
+    port:1433,
+    database: `csart`,
+    user:  "sa",
+    password:"sqlpp2020N",
+  },
     "@luodexun/wallet-api":{}
 };

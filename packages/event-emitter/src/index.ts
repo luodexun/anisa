@@ -10,6 +10,7 @@ export const plugin = {
 };
 
 export enum ApplicationEvents {
+    LogUpdate = "log.update",
     ApplicationShutdown = "shutdown",
     BlockApplied = "block.applied",
     BlockDisregarded = "block.disregarded",

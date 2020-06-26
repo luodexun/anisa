@@ -13,7 +13,7 @@ export const plugin: Container.IPluginDescriptor = {
         container.resolvePlugin<Logger.ILogger>("logger").info("Establishing Database:mysql Connection");
         const connectionManager = container.resolvePlugin<ConnectionManager>("database-manager");
 
-        return await connectionManager.createConnection(new MysqlConnection(options),'mysql');
+        return await connectionManager.createConnection(new MysqlConnection(options), "mysql");
     },
     async deregister(container: Container.IContainer, options) {
         container.resolvePlugin<Logger.ILogger>("logger").info("Closing Database:mysql Connection");

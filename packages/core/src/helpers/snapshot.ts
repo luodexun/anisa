@@ -1,5 +1,5 @@
-import { app } from "@arkecosystem/core-container";
-import { Container } from "@arkecosystem/core-interfaces";
+import { app } from "@luodexun/container";
+import { Container } from "@luodexun/interfaces";
 import { lstatSync, readdirSync } from "fs";
 import prompts from "prompts";
 import { CommandFlags } from "../types";

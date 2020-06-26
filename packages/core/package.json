@@ -11,6 +11,7 @@
     "@arkecosystem/crypto": "^2.5.38",
     "@luodexun/container": "^0.0.11",
     "@luodexun/database-manager": "^0.0.2",
+    "@luodexun/database-mssql": "^0.0.1",
     "@luodexun/database-postgres": "^0.0.2",
     "@luodexun/interfaces": "^0.0.2",
     "@luodexun/logger-manager": "^1.0.5",
