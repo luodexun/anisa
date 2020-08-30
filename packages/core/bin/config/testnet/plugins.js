@@ -10,11 +10,11 @@ module.exports = {
     //   },
     // },
   "@luodexun/database-mysql":{
-    host: process.env.CORE_MYSQL_HOST || "localhost",
-    port: process.env.CORE_MYSQL_PORT || 3306,
-    database: process.env.CORE_DB_DATABASE || "dwn",
-    user: process.env.CORE_DB_USERNAME || "root",
-    password: process.env.CORE_DB_PASSWORD || "ldx574425450",
+    host:"129.204.249.237",
+    port:3306,
+    database:"csgy",
+    user: "root",
+    password:"sqlapp2020xx",
   },
   "@luodexun/database-mssql":{
     server:"106.55.62.27",

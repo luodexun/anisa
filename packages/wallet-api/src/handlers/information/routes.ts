@@ -15,7 +15,7 @@ export const registerRoutes = (server: Hapi.Server): void => {
     });
 
     server.route({
-        method: "POST",
+        method: "GET",
         path: "/search",
         handler: controller.search,
         options: {

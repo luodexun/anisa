@@ -15,10 +15,11 @@ export class ServerCache {
         if (!_.isEmpty(this.server.app.config.cache)) {
             options = {
                 cache: {
+                    cache: "redisCache",
                     expiresIn: expiresIn * 1000,
-                    generateTimeout: 100
+                    generateTimeout: 100,
                 },
-                generateKey: request => this.generateCacheKey(argsCallback(request)),
+                generateKey: (request) => this.generateCacheKey(argsCallback(request)),
             };
         }
         this.server.method(name, method, options);

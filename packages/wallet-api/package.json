@@ -31,6 +31,7 @@
         "@luodexun/container": "^0.0.11",
         "@luodexun/interfaces": "^0.0.2",
         "bcrypt": "^3.0.8",
+        "catbox-redis": "^4.2.4",
         "deepmerge": "^4.2.2",
         "dottie": "^2.0.2",
         "expand-home-dir": "0.0.3",

@@ -2,7 +2,7 @@ import { app } from "@luodexun/container";
 import { Database, Logger } from "@luodexun/interfaces";
 import { Connection, createConnection} from "mysql";
 import { QueryExecutor } from "./sql/query-executor";
-export class MysqlConnection  implements Database.IConnection{
+export class MysqlConnection  implements Database.IConnection {
     // @TODO: make this private
     public query: QueryExecutor;
     public db: Connection;
@@ -43,8 +43,6 @@ export class MysqlConnection  implements Database.IConnection{
 
     public async disconnect(): Promise<void> {
         this.logger.debug("Disconnecting from database");
-
-
         try {
             this.cache.clear();
         } catch (error) {
