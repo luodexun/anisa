@@ -13,6 +13,7 @@
             }
         ],
         "await-promise": true,
+        "quotemark": false,
         "member-access": true,
         "arrow-parens": false,
         "no-console": false,
