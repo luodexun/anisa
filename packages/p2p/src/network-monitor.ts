@@ -1,16 +1,8 @@
 /* tslint:disable:max-line-length */
 
-import { app } from "@arkecosystem/core-container";
-import { ApplicationEvents } from "@arkecosystem/core-event-emitter/dist";
-import { Blockchain, EventEmitter, Logger, P2P } from "@arkecosystem/core-interfaces";
-import { Interfaces } from "@arkecosystem/crypto";
-import delay from "delay";
-import groupBy from "lodash.groupby";
-import shuffle from "lodash.shuffle";
-import take from "lodash.take";
-import pluralize from "pluralize";
-import prettyMs from "pretty-ms";
-import SocketCluster from "socketcluster";
+import { app } from "@luodexun/container";
+import { EventEmitter, Logger, P2P } from "@luodexun/interfaces";
+import { AGServer } from "socketcluster-server";
 import { IPeerData } from "./interfaces";
 import { NetworkState } from "./network-state";
 import { RateLimiter } from "./rate-limiter";
@@ -19,22 +11,11 @@ import { buildRateLimiter, checkDNS, checkNTP } from "./utils";
 const defaultDownloadChunkSize = 400;
 
 export class NetworkMonitor implements P2P.INetworkMonitor {
-    public server: SocketCluster;
+    public server: AGServer;
     public config: any;
     public nextUpdateNetworkStatusScheduled: boolean;
     private initializing: boolean = true;
     private coldStart: boolean = false;
-
-    /**
-     * If downloading some chunk fails but nevertheless we manage to download higher chunks,
-     * then they are stored here for later retrieval.
-     */
-    private downloadedChunksCache: { [key: string]: Interfaces.IBlockData[] } = {};
-
-    /**
-     * Maximum number of entries to keep in `downloadedChunksCache`.
-     * At 400 blocks per chunk, 100 chunks would amount to 40k blocks.
-     */
     private downloadedChunksCacheMax: number = 100;
 
     private downloadChunkSize: number = defaultDownloadChunkSize;
@@ -65,18 +46,17 @@ export class NetworkMonitor implements P2P.INetworkMonitor {
         this.rateLimiter = buildRateLimiter(options);
     }
 
-    public getServer(): SocketCluster {
+    public getServer(): AGServer {
         return this.server;
     }
 
-    public setServer(server: SocketCluster): void {
+    public setServer(server: AGServer): void {
         this.server = server;
     }
 
     public stopServer(): void {
         if (this.server) {
-            this.server.removeAllListeners();
-            this.server.destroy();
+            this.server.close();
             this.server = undefined;
         }
     }
@@ -326,153 +306,7 @@ export class NetworkMonitor implements P2P.INetworkMonitor {
         return { forked: true, blocksToRollback: Math.min(lastBlock.data.height - highestCommonHeight, 5000) };
     }
 
-    public async downloadBlocksFromHeight(
-        fromBlockHeight: number,
-        maxParallelDownloads: number = 10,
-    ): Promise<Interfaces.IBlockData[]> {
-        const peersAll: P2P.IPeer[] = this.storage.getPeers();
 
-        if (peersAll.length === 0) {
-            this.logger.error(`Could not download blocks: we have 0 peers`);
-            return [];
-        }
-
-        const peersNotForked: P2P.IPeer[] = shuffle(peersAll.filter(peer => !peer.isForked()));
-
-        if (peersNotForked.length === 0) {
-            this.logger.error(
-                `Could not download blocks: We have ${pluralize("peer", peersAll.length, true)} but all ` +
-                    `of them are on a different chain than us`,
-            );
-            return [];
-        }
-
-        const networkHeight: number = this.getNetworkHeight();
-        let chunksMissingToSync: number;
-        if (!networkHeight || networkHeight <= fromBlockHeight) {
-            chunksMissingToSync = 1;
-        } else {
-            chunksMissingToSync = Math.ceil((networkHeight - fromBlockHeight) / this.downloadChunkSize);
-        }
-        const chunksToDownload: number = Math.min(chunksMissingToSync, peersNotForked.length, maxParallelDownloads);
-
-        // We must return an uninterrupted sequence of blocks, starting from `fromBlockHeight`,
-        // with sequential heights, without gaps.
-
-        const downloadJobs = [];
-        const downloadResults = [];
-        let someJobFailed: boolean = false;
-        let chunksHumanReadable: string = "";
-
-        for (let i = 0; i < chunksToDownload; i++) {
-            const height: number = fromBlockHeight + this.downloadChunkSize * i;
-            const isLastChunk: boolean = i === chunksToDownload - 1;
-            const blocksRange: string = `[${height + 1}, ${isLastChunk ? ".." : height + this.downloadChunkSize}]`;
-
-            downloadJobs.push(async () => {
-                if (this.downloadedChunksCache[height] !== undefined) {
-                    downloadResults[i] = this.downloadedChunksCache[height];
-                    // Remove it from the cache so that it does not get served many times
-                    // from the cache. In case of network reorganization or downloading
-                    // flawed chunks we want to re-download from another peer.
-                    delete this.downloadedChunksCache[height];
-                    return;
-                }
-
-                let blocks: Interfaces.IBlockData[];
-                let peer: P2P.IPeer;
-                let peerPrint: string;
-
-                // As a first peer to try, pick such a peer that different jobs use different peers.
-                // If that peer fails then pick randomly from the remaining peers that have not
-                // been first-attempt for any job.
-                const peersToTry = [peersNotForked[i], ...shuffle(peersNotForked.slice(chunksToDownload))];
-
-                for (peer of peersToTry) {
-                    peerPrint = `${peer.ip}:${peer.port}`;
-                    try {
-                        blocks = await this.communicator.getPeerBlocks(peer, {
-                            fromBlockHeight: height,
-                            blockLimit: this.downloadChunkSize,
-                        });
-
-                        if (blocks.length === this.downloadChunkSize || (isLastChunk && blocks.length > 0)) {
-                            this.logger.debug(
-                                `Downloaded blocks ${blocksRange} (${blocks.length}) ` + `from ${peerPrint}`,
-                            );
-                            downloadResults[i] = blocks;
-                            return;
-                        }
-                    } catch (error) {
-                        this.logger.info(
-                            `Failed to download blocks ${blocksRange} from ${peerPrint}: ${error.message}`,
-                        );
-                    }
-
-                    if (someJobFailed) {
-                        this.logger.info(
-                            `Giving up on trying to download blocks ${blocksRange}: ` + `another download job failed`,
-                        );
-                        return;
-                    }
-                }
-
-                someJobFailed = true;
-
-                throw new Error(
-                    `Could not download blocks ${blocksRange} from any of ${pluralize(
-                        "peer",
-                        peersToTry.length,
-                        true,
-                    )}. ` + `Last attempt returned ${pluralize("block", blocks.length, true)} from peer ${peerPrint}.`,
-                );
-            });
-
-            if (chunksHumanReadable.length > 0) {
-                chunksHumanReadable += ", ";
-            }
-            chunksHumanReadable += blocksRange;
-        }
-
-        this.logger.debug(`Downloading blocks in chunks: ${chunksHumanReadable}`);
-
-        let firstFailureMessage: string;
-
-        try {
-            // Convert the array of AsyncFunction to an array of Promise by calling the functions.
-            await Promise.all(downloadJobs.map(f => f()));
-        } catch (error) {
-            firstFailureMessage = error.message;
-        }
-
-        let downloadedBlocks: Interfaces.IBlockData[] = [];
-
-        let i;
-
-        for (i = 0; i < chunksToDownload; i++) {
-            if (downloadResults[i] === undefined) {
-                this.logger.error(firstFailureMessage);
-                break;
-            }
-            downloadedBlocks = [...downloadedBlocks, ...downloadResults[i]];
-        }
-
-        // Save any downloaded chunks that are higher than a failed chunk for later reuse.
-        for (i++; i < chunksToDownload; i++) {
-            if (
-                downloadResults[i] !== undefined &&
-                Object.keys(this.downloadedChunksCache).length <= this.downloadedChunksCacheMax
-            ) {
-                this.downloadedChunksCache[fromBlockHeight + this.downloadChunkSize * i] = downloadResults[i];
-            }
-        }
-
-        // if we did not manage to download any block, reduce chunk size for next time
-        this.downloadChunkSize =
-            downloadedBlocks.length === 0 ? Math.ceil(this.downloadChunkSize / 10) : defaultDownloadChunkSize;
-
-        return downloadedBlocks;
-    }
 
     public async broadcastBlock(block: Interfaces.IBlock): Promise<void> {
         const blockchain = app.resolvePlugin<Blockchain.IBlockchain>("blockchain");
@@ -542,9 +376,6 @@ export class NetworkMonitor implements P2P.INetworkMonitor {
         if (!pingAll) {
             peers = shuffle(peers).slice(0, Math.floor(peers.length / 2));
         }
-
-        this.logger.debug(`Checking ports of ${pluralize("peer", peers.length, true)}.`);
-
         Promise.all(
             peers.map(async peer => {
                 try {

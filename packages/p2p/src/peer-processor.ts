@@ -1,18 +1,14 @@
 /* tslint:disable:max-line-length */
 
-import { app } from "@arkecosystem/core-container";
-import { ApplicationEvents } from "@arkecosystem/core-event-emitter";
-import { EventEmitter, Logger, P2P } from "@arkecosystem/core-interfaces";
-import { Utils } from "@arkecosystem/crypto";
+import { app } from "@luodexun/container";
+import { Logger, P2P } from "@luodexun/interfaces";
 import { Peer } from "./peer";
-import { isValidVersion, isWhitelisted } from "./utils";
+import { isWhitelisted } from "./utils";
 
 export class PeerProcessor implements P2P.IPeerProcessor {
     public server: any;
-    public nextUpdateNetworkStatusScheduled: boolean;
 
     private readonly logger: Logger.ILogger = app.resolvePlugin<Logger.ILogger>("logger");
-    private readonly emitter: EventEmitter.EventEmitter = app.resolvePlugin<EventEmitter.EventEmitter>("event-emitter");
 
     private readonly communicator: P2P.IPeerCommunicator;
     private readonly connector: P2P.IPeerConnector;
@@ -30,10 +26,6 @@ export class PeerProcessor implements P2P.IPeerProcessor {
         this.communicator = communicator;
         this.connector = connector;
         this.storage = storage;
-
-        this.emitter.on(ApplicationEvents.InternalMilestoneChanged, () => {
-            this.updatePeersAfterMilestoneChange();
-        });
     }
 
     public async validateAndAcceptPeer(peer: P2P.IPeer, options: P2P.IAcceptNewPeerOptions = {}): Promise<void> {
@@ -74,15 +66,6 @@ export class PeerProcessor implements P2P.IPeerProcessor {
         return true;
     }
 
-    private updatePeersAfterMilestoneChange(): void {
-        const peers: P2P.IPeer[] = this.storage.getPeers();
-        for (const peer of peers) {
-            if (!isValidVersion(peer)) {
-                this.emitter.emit("internal.p2p.disconnectPeer", { peer });
-            }
-        }
-    }
-
     private async acceptNewPeer(peer, options: P2P.IAcceptNewPeerOptions = {}): Promise<void> {
         if (this.storage.getPeer(peer.ip)) {
             return;
@@ -100,8 +83,6 @@ export class PeerProcessor implements P2P.IPeerProcessor {
             if (!options.lessVerbose || process.env.CORE_P2P_PEER_VERIFIER_DEBUG_EXTRA) {
                 this.logger.debug(`Accepted new peer ${newPeer.ip}:${newPeer.port} (v${newPeer.version})`);
             }
-
-            this.emitter.emit(ApplicationEvents.PeerAdded, newPeer);
         } catch (error) {
             this.connector.disconnect(newPeer);
         } finally {
