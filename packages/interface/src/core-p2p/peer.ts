@@ -1,5 +1,4 @@
 import { Dayjs } from "dayjs";
-import { IPeerVerificationResult } from "./peer-verifier";
 
 export interface IPeerPorts {
     [name: string]: number;
@@ -22,7 +21,6 @@ export interface IPeer {
     state: IPeerState;
     plugins: IPeerPlugins;
     lastPinged: Dayjs | undefined;
-    verificationResult: IPeerVerificationResult | undefined;
 
     isVerified(): boolean;
     isForked(): boolean;

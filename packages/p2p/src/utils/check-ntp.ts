@@ -1,13 +1,13 @@
-import { app } from "@arkecosystem/core-container";
-import { Logger } from "@arkecosystem/core-interfaces";
 import Sntp from "@hapi/sntp";
-import shuffle from "lodash.shuffle";
+import { app } from "@luodexun/container";
+import { Logger } from "@luodexun/interfaces";
+import * as _ from "lodash";
 
 export const checkNTP = (hosts, timeout = 1000): any => {
     const logger = app.resolvePlugin<Logger.ILogger>("logger");
 
     return new Promise(async (resolve, reject) => {
-        for (const host of shuffle(hosts)) {
+        for (const host of _.shuffle(hosts)) {
             try {
                 const time: Sntp.TimeOptions = await Sntp.time({ host, timeout });
 

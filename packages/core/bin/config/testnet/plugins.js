@@ -9,6 +9,7 @@ module.exports = {
     //     password: process.env.CORE_DB_PASSWORD || "123456",
     //   },
     // },
+  "@luodexun/event-emitter": {},
   "@luodexun/database-mysql":{
     host:"129.204.249.237",
     port:3306,
@@ -23,5 +24,6 @@ module.exports = {
     user:  "sa",
     password:"sqlpp2020N",
   },
-    "@luodexun/wallet-api":{}
+  "@luodexun/p2p":{},
+  "@luodexun/wallet-api":{}
 };

@@ -1,11 +1,11 @@
-import { app } from "@arkecosystem/core-container";
-import { Logger } from "@arkecosystem/core-interfaces";
+import { app } from "@luodexun/container";
+import { Logger } from "@luodexun/interfaces";
 import dns from "dns";
-import shuffle from "lodash.shuffle";
+import * as _ from "lodash";
 import util from "util";
 
 export const checkDNS = async hosts => {
-    hosts = shuffle(hosts);
+    hosts = _.shuffle(hosts);
 
     const lookupService = util.promisify(dns.lookupService);
 

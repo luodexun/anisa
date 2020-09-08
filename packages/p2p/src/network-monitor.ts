@@ -1,14 +1,14 @@
 /* tslint:disable:max-line-length */
-
 import { app } from "@luodexun/container";
 import { EventEmitter, Logger, P2P } from "@luodexun/interfaces";
+import delay from "delay";
+import * as _ from "lodash";
+import pluralize from "pluralize";
+import prettyMs from "pretty-ms";
 import { AGServer } from "socketcluster-server";
 import { IPeerData } from "./interfaces";
-import { NetworkState } from "./network-state";
 import { RateLimiter } from "./rate-limiter";
 import { buildRateLimiter, checkDNS, checkNTP } from "./utils";
-
-const defaultDownloadChunkSize = 400;
 
 export class NetworkMonitor implements P2P.INetworkMonitor {
     public server: AGServer;
@@ -16,9 +16,6 @@ export class NetworkMonitor implements P2P.INetworkMonitor {
     public nextUpdateNetworkStatusScheduled: boolean;
     private initializing: boolean = true;
     private coldStart: boolean = false;
-    private downloadedChunksCacheMax: number = 100;
-
-    private downloadChunkSize: number = defaultDownloadChunkSize;
 
     private readonly logger: Logger.ILogger = app.resolvePlugin<Logger.ILogger>("logger");
     private readonly emitter: EventEmitter.EventEmitter = app.resolvePlugin<EventEmitter.EventEmitter>("event-emitter");
@@ -44,6 +41,10 @@ export class NetworkMonitor implements P2P.INetworkMonitor {
         this.processor = processor;
         this.storage = storage;
         this.rateLimiter = buildRateLimiter(options);
+    }
+
+    public getNetworkState(): Promise<P2P.INetworkState> {
+        throw new Error("Method not implemented.");
     }
 
     public getServer(): AGServer {
@@ -72,7 +73,7 @@ export class NetworkMonitor implements P2P.INetworkMonitor {
         } else {
             await this.updateNetworkStatus(true);
 
-            for (const [version, peers] of Object.entries(groupBy(this.storage.getPeers(), "version"))) {
+            for (const [version, peers] of Object.entries(_.groupBy(this.storage.getPeers(), "version"))) {
                 this.logger.info(`Discovered ${pluralize("peer", peers.length, true)} with v${version}.`);
             }
         }
@@ -132,7 +133,7 @@ export class NetworkMonitor implements P2P.INetworkMonitor {
         const pingDelay = fast ? 1500 : app.resolveOptions("p2p").verifyTimeout;
 
         if (peerCount) {
-            peers = shuffle(peers).slice(0, peerCount);
+            peers = _.shuffle(peers).slice(0, peerCount);
             max = Math.min(peers.length, peerCount);
         }
 
@@ -156,7 +157,6 @@ export class NetworkMonitor implements P2P.INetworkMonitor {
                         }
 
                         this.emitter.emit("internal.p2p.disconnectPeer", { peer });
-                        this.emitter.emit(ApplicationEvents.PeerRemoved, peer);
 
                         return undefined;
                     }
@@ -181,7 +181,7 @@ export class NetworkMonitor implements P2P.INetworkMonitor {
         const ownPeers: P2P.IPeer[] = this.storage.getPeers();
         const theirPeers: P2P.IPeer[] = Object.values(
             (await Promise.all(
-                shuffle(this.storage.getPeers())
+                _.shuffle(this.storage.getPeers())
                     .slice(0, 8)
                     .map(async (peer: P2P.IPeer) => {
                         try {
@@ -194,7 +194,7 @@ export class NetworkMonitor implements P2P.INetworkMonitor {
                     }),
             ))
                 .map(peers =>
-                    shuffle(peers)
+                    _.shuffle(peers)
                         .slice(0, maxPeersPerPeer)
                         .reduce((acc, curr) => ({ ...acc, ...{ [curr.ip]: curr } }), {}),
                 )
@@ -246,135 +246,17 @@ export class NetworkMonitor implements P2P.INetworkMonitor {
         return medians[Math.floor(medians.length / 2)] || 0;
     }
 
-    public async getNetworkState(): Promise<P2P.INetworkState> {
-        await this.cleansePeers({ fast: true, forcePing: true });
-        return NetworkState.analyze(this, this.storage);
-    }
-
     public async refreshPeersAfterFork(): Promise<void> {
         this.logger.info(`Refreshing ${this.storage.getPeers().length} peers after fork.`);
 
         await this.cleansePeers({ forcePing: true });
     }
 
-    public async checkNetworkHealth(): Promise<P2P.INetworkStatus> {
-        await this.discoverPeers(true);
-        await this.cleansePeers({ forcePing: true });
-
-        const lastBlock = app
-            .resolvePlugin("state")
-            .getStore()
-            .getLastBlock();
-
-        const allPeers: P2P.IPeer[] = this.storage.getPeers();
-
-        if (!allPeers.length) {
-            this.logger.info("No peers available.");
-
-            return { forked: false };
-        }
-
-        const forkedPeers: P2P.IPeer[] = allPeers.filter((peer: P2P.IPeer) => peer.isForked());
-        const majorityOnOurChain: boolean = forkedPeers.length / allPeers.length < 0.5;
-
-        if (majorityOnOurChain) {
-            this.logger.info("The majority of peers is not forked. No need to rollback.");
-            return { forked: false };
-        }
-
-        const groupedByCommonHeight = groupBy(allPeers, "verification.highestCommonHeight");
-
-        const groupedByLength = groupBy(Object.values(groupedByCommonHeight), "length");
-
-        // Sort by longest
-        // @ts-ignore
-        const longest = Object.keys(groupedByLength).sort((a, b) => b - a)[0];
-        const longestGroups = groupedByLength[longest];
-
-        // Sort by highest common height DESC
-        longestGroups.sort(
-            (a, b) => b[0].verificationResult.highestCommonHeight - a[0].verificationResult.highestCommonHeight,
-        );
-        const peersMostCommonHeight = longestGroups[0];
-
-        const { highestCommonHeight } = peersMostCommonHeight[0].verificationResult;
-        this.logger.info(
-            `Rolling back to most common height ${highestCommonHeight}. Own height: ${lastBlock.data.height}`,
-        );
-
-        // Now rollback blocks equal to the distance to the most common height.
-        return { forked: true, blocksToRollback: Math.min(lastBlock.data.height - highestCommonHeight, 5000) };
-    }
-
-
-
-    public async broadcastBlock(block: Interfaces.IBlock): Promise<void> {
-        const blockchain = app.resolvePlugin<Blockchain.IBlockchain>("blockchain");
-
-        if (!blockchain) {
-            this.logger.info(
-                `Skipping broadcast of block ${block.data.height.toLocaleString()} as blockchain is not ready`,
-            );
-            return;
-        }
-
-        let blockPing = blockchain.getBlockPing();
-        let peers: P2P.IPeer[] = this.storage.getPeers();
-
-        if (blockPing && blockPing.block.id === block.data.id) {
-            // wait a bit before broadcasting if a bit early
-            const diff = blockPing.last - blockPing.first;
-            const maxHop = 4;
-            let broadcastQuota: number = (maxHop - blockPing.count) / maxHop;
-
-            if (diff < 500 && broadcastQuota > 0) {
-                await delay(500 - diff);
-
-                blockPing = blockchain.getBlockPing();
-
-                // got aleady a new block, no broadcast
-                if (blockPing.block.id !== block.data.id) {
-                    return;
-                }
-
-                broadcastQuota = (maxHop - blockPing.count) / maxHop;
-            }
-
-            peers = broadcastQuota <= 0 ? [] : shuffle(peers).slice(0, Math.ceil(broadcastQuota * peers.length));
-            // select a portion of our peers according to quota calculated before
-        }
-
-        this.logger.info(
-            `Broadcasting block ${block.data.height.toLocaleString()} to ${pluralize("peer", peers.length, true)}`,
-        );
-
-        await Promise.all(peers.map(peer => this.communicator.postBlock(peer, block)));
-    }
-
-    public async broadcastTransactions(transactions: Interfaces.ITransaction[]): Promise<any> {
-        const peers: P2P.IPeer[] = take(shuffle(this.storage.getPeers()), app.resolveOptions("p2p").maxPeersBroadcast);
-
-        this.logger.debug(
-            `Broadcasting ${pluralize("transaction", transactions.length, true)} to ${pluralize(
-                "peer",
-                peers.length,
-                true,
-            )}`,
-        );
-
-        const transactionsBroadcast: Interfaces.ITransactionJson[] = transactions.map(transaction =>
-            transaction.toJson(),
-        );
-
-        return Promise.all(
-            peers.map((peer: P2P.IPeer) => this.communicator.postTransactions(peer, transactionsBroadcast)),
-        );
-    }
 
     private async pingPeerPorts(pingAll?: boolean): Promise<void> {
         let peers = this.storage.getPeers();
         if (!pingAll) {
-            peers = shuffle(peers).slice(0, Math.floor(peers.length / 2));
+            peers = _.shuffle(peers).slice(0, Math.floor(peers.length / 2));
         }
         Promise.all(
             peers.map(async peer => {

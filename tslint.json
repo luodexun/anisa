@@ -12,6 +12,7 @@
                 "message": "Use a regular for loop instead."
             }
         ],
+        "prefer-const": false,
         "await-promise": true,
         "quotemark": false,
         "member-access": true,

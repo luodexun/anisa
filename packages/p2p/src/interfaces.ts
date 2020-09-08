@@ -1,4 +1,4 @@
-import { P2P } from "@arkecosystem/core-interfaces";
+import { P2P } from "@luodexun/interfaces";
 
 export interface IPeerData {
     ip: string;

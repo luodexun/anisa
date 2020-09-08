@@ -1,4 +1,4 @@
-import { P2P } from "@arkecosystem/core-interfaces";
+import { P2P } from "@luodexun/interfaces";
 
 export class PeerRepository<T> implements P2P.IPeerRepository<T> {
     private readonly repository: Map<string, T> = new Map<string, T>();

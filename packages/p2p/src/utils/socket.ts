@@ -1,10 +1,10 @@
 import delay from "delay";
-import { SCClientSocket } from "socketcluster-client";
+import { AGClientSocket } from "socketcluster-client";
 import { SocketErrors } from "../enums";
 
 export const socketEmit = async (
     host: string,
-    socket: SCClientSocket,
+    socket: AGClientSocket,
     event: string,
     data: any,
     headers: Record<string, any>,
@@ -26,9 +26,7 @@ export const socketEmit = async (
         throw error;
     }
 
-    const socketEmitPromise = new Promise((resolve, reject) =>
-        socket.emit(event, req, (err, val) => (err ? reject(err) : resolve(val))),
-    );
+    const socketEmitPromise = socket.invoke(event, req);
 
     let timeoutHandle: NodeJS.Timeout;
     const timeoutPromiseFn = (_, reject) => {

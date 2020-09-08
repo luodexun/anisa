@@ -1,18 +1,20 @@
 import { app } from "@luodexun/container";
 import { EventEmitter, Logger, P2P } from "@luodexun/interfaces";
-// import dayjs from "dayjs";
+import { httpie } from "@luodexun/utils";
+import dayjs from "dayjs";
+import { AGClientSocket } from "socketcluster-client";
+import { constants } from "./constants";
 // import delay from "delay";
-import { PeerPingTimeoutError, PeerStatusResponseError, PeerVerificationFailedError } from "./errors";
+import { PeerStatusResponseError} from "./errors";
 import { IPeerConfig, IPeerPingResponse } from "./interfaces";
-import { PeerVerifier } from "./peer-verifier";
-import { replySchemas } from "./schemas";
+import { isValidVersion, socketEmit} from "./utils";
 
 export class PeerCommunicator implements P2P.IPeerCommunicator {
     private readonly logger: Logger.ILogger = app.resolvePlugin<Logger.ILogger>("logger");
     private readonly emitter: EventEmitter.EventEmitter = app.resolvePlugin<EventEmitter.EventEmitter>("event-emitter");
 
-    constructor(connector: P2P.IPeerConnector) {
-        console.log(connector);
+    constructor(private readonly connector: P2P.IPeerConnector) {
+        console.log(123);
     }
 
     public async postBlock() {
@@ -27,7 +29,6 @@ export class PeerCommunicator implements P2P.IPeerCommunicator {
     // ! peerVerifier.checkState can take more time !
     // TODO refactor on next version ?
     public async ping(peer: P2P.IPeer, timeoutMsec: number, force: boolean = false): Promise<any> {
-        const deadline = new Date().getTime() + timeoutMsec;
 
         if (peer.recentlyPinged() && !force) {
             return undefined;
@@ -43,24 +44,6 @@ export class PeerCommunicator implements P2P.IPeerCommunicator {
 
         if (!pingResponse) {
             throw new PeerStatusResponseError(peer.ip);
-        }
-
-        if (process.env.CORE_SKIP_PEER_STATE_VERIFICATION !== "true") {
-            if (!this.validatePeerConfig(peer, pingResponse.config)) {
-                throw new PeerVerificationFailedError();
-            }
-
-            const peerVerifier = new PeerVerifier(this, peer);
-
-            if (deadline <= new Date().getTime()) {
-                throw new PeerPingTimeoutError(timeoutMsec);
-            }
-
-            peer.verificationResult = await peerVerifier.checkState(pingResponse.state, deadline);
-
-            if (!peer.isVerified()) {
-                throw new PeerVerificationFailedError();
-            }
         }
 
         peer.lastPinged = dayjs();
@@ -133,29 +116,6 @@ export class PeerCommunicator implements P2P.IPeerCommunicator {
         console.log(123);
     }
 
-    private parseHeaders(peer: P2P.IPeer): void {
-        console.log(123);
-    }
-
-    private validateReply(peer: P2P.IPeer, reply: any, endpoint: string): boolean {
-        const schema = replySchemas[endpoint];
-        if (schema === undefined) {
-            this.logger.error(`Can't validate reply from "${endpoint}": none of the predefined schemas matches.`);
-            return false;
-        }
-
-        const { error } = Validation.validator.validate(schema, reply);
-        if (error) {
-            if (process.env.CORE_P2P_PEER_VERIFIER_DEBUG_EXTRA) {
-                this.logger.debug(`Got unexpected reply from ${peer.url}/${endpoint}: ${error}`);
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
     private async emit(
         peer: P2P.IPeer,
         event: string,
@@ -164,6 +124,31 @@ export class PeerCommunicator implements P2P.IPeerCommunicator {
         maxPayload?: number,
         disconnectOnError: boolean = true,
     ) {
-        console.log(123);
+        let response;
+        try {
+            this.connector.forgetError(peer);
+
+            const timeBeforeSocketCall: number = new Date().getTime();
+
+            maxPayload = maxPayload || 100 * constants.KILOBYTE; // 100KB by default, enough for most requests
+            const connection: AGClientSocket  = this.connector.connect(peer, maxPayload);
+            response = await socketEmit(
+                peer.ip,
+                connection,
+                event,
+                data,
+                {
+                    "Content-Type": "application/json",
+                },
+                timeout,
+            );
+
+            peer.latency = new Date().getTime() - timeBeforeSocketCall;
+        } catch (e) {
+            return undefined;
+        }
+
+        return response.data;
     }
+
 }

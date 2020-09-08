@@ -1,7 +1,6 @@
-import { app } from "@arkecosystem/core-container";
-import { P2P } from "@arkecosystem/core-interfaces";
+import { app } from "@luodexun/container";
+import { P2P } from "@luodexun/interfaces";
 import dayjs, { Dayjs } from "dayjs";
-import { PeerVerificationResult } from "./peer-verifier";
 
 export class Peer implements P2P.IPeer {
     public readonly ports: P2P.IPeerPorts = {};
@@ -10,7 +9,6 @@ export class Peer implements P2P.IPeer {
     public version: string;
     public latency: number;
     public lastPinged: Dayjs | undefined;
-    public verificationResult: PeerVerificationResult | undefined;
 
     public state: P2P.IPeerState = {
         height: undefined,
@@ -28,11 +26,11 @@ export class Peer implements P2P.IPeer {
     }
 
     public isVerified(): boolean {
-        return this.verificationResult instanceof PeerVerificationResult;
+        return true;
     }
 
     public isForked(): boolean {
-        return this.isVerified() && this.verificationResult.forked;
+        return false;
     }
 
     public recentlyPinged(): boolean {

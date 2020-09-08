@@ -1,0 +1,41 @@
+{
+  "name": "@luodexun/utils",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "luodexun <lll279906908@outlook.com>",
+  "homepage": "https://github.com/luodexun/anisa#readme",
+  "license": "ISC",
+  "main": "lib/index",
+  "types": "lib/index",
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luodexun/anisa.git"
+  },
+  "scripts": {
+    "build": "yarn clean && yarn compile",
+    "build:watch": "yarn clean && yarn compile -w",
+    "clean": "../../node_modules/del-cli/cli.js lib",
+    "compile": "../../node_modules/typescript/bin/tsc",
+    "prepublishOnly": "yarn build",
+    "pretest": "bash ../../scripts/pre-test.sh"
+  },
+  "bugs": {
+    "url": "https://github.com/luodexun/anisa/issues"
+  },
+  "engines": {
+    "node": ">=10.x"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/got": "^9.6.11"
+  },
+  "dependencies": {
+    "fast-json-parse": "^1.0.3",
+    "got": "^11.6.0"
+  }
+}

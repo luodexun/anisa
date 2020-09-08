@@ -7,24 +7,31 @@
     "setup:clean": "yarn && yarn clean && yarn bootstrap && yarn build",
     "bootstrap": "yarn lerna bootstrap",
     "clean": "yarn lerna clean --yes",
-    "build": "yarn lerna run build"
+    "build": "yarn lerna run build",
+    "docker": "node ./scripts/docker/generate-docker.js ark"
   },
   "devDependencies": {
+    "@sindresorhus/tsconfig": "^0.4.0",
     "@types/nock": "^10.0.3",
     "@types/node": "^12.6.2",
-    "@sindresorhus/tsconfig": "^0.4.0",
     "@types/uuid": "^3.4.5",
     "babel-loader": "^8.0.6",
     "codecov": "^3.5.0",
     "create-hash": "^1.2.0",
     "cross-env": "^5.2.0",
+    "del-cli": "^3.0.0",
     "husky": "^3.0.0",
     "lerna": "^3.20.2",
     "lint-staged": "^9.2.0",
     "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.3",
-    "uuid": "^3.3.2",
-    "del-cli": "^3.0.0"
+    "uuid": "^3.3.2"
+  },
+  "dependencies": {
+    "@types/chai": "^4.2.12",
+    "@types/mocha": "^8.0.3",
+    "chai": "^4.2.0",
+    "mocha": "^8.1.3"
   }
 }

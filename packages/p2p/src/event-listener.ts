@@ -1,5 +1,5 @@
-import { app } from "@arkecosystem/core-container";
-import { EventEmitter, P2P } from "@arkecosystem/core-interfaces";
+import { app } from "@luodexun/container";
+import { EventEmitter, P2P } from "@luodexun/interfaces";
 
 export class EventListener {
     private readonly emitter: EventEmitter.EventEmitter = app.resolvePlugin<EventEmitter.EventEmitter>("event-emitter");

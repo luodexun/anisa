@@ -9,7 +9,6 @@ export class PeerProcessor implements P2P.IPeerProcessor {
     public server: any;
 
     private readonly logger: Logger.ILogger = app.resolvePlugin<Logger.ILogger>("logger");
-
     private readonly communicator: P2P.IPeerCommunicator;
     private readonly connector: P2P.IPeerConnector;
     private readonly storage: P2P.IPeerStorage;
@@ -40,7 +39,7 @@ export class PeerProcessor implements P2P.IPeerProcessor {
             return false;
         }
 
-        if (!Utils.isValidPeer(peer) || this.storage.hasPendingPeer(peer.ip)) {
+        if (this.storage.hasPendingPeer(peer.ip)) {
             return false;
         }
 

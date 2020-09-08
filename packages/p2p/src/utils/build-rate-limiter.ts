@@ -1,4 +1,4 @@
-import { app } from "@arkecosystem/core-container";
+import { app } from "@luodexun/container";
 import { RateLimiter } from "../rate-limiter";
 
 export const buildRateLimiter = options => {

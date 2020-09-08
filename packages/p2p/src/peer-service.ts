@@ -1,4 +1,4 @@
-import { P2P } from "@arkecosystem/core-interfaces";
+import { P2P } from "@luodexun/interfaces";
 
 export class PeerService implements P2P.IPeerService {
     private readonly communicator: P2P.IPeerCommunicator;

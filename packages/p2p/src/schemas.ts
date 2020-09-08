@@ -1,4 +1,4 @@
-import { app } from "@arkecosystem/core-container";
+import { app } from "@luodexun/container";
 
 export const requestSchemas = {
     peer: {
